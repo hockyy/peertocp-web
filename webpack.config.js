@@ -28,8 +28,12 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: path.join(__dirname, '../'),
+    static: {
+      directory: path.join(__dirname, "./")
+    },
     compress: true,
-    publicPath: '/monaco/dist/'
+    devMiddleware: {
+      publicPath: '/dist/'
+    },
   }
 }

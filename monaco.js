@@ -1,9 +1,9 @@
 /* eslint-env browser */
 
 import * as Y from 'yjs'
-import { WebsocketProvider } from 'y-websocket'
 import { MonacoBinding } from 'y-monaco'
 import * as monaco from 'monaco-editor'
+import {WebrtcProvider} from "y-webrtc";
 
 // @ts-ignore
 window.MonacoEnvironment = {
@@ -26,7 +26,7 @@ window.MonacoEnvironment = {
 
 window.addEventListener('load', () => {
   const ydoc = new Y.Doc()
-  const provider = new WebsocketProvider('wss://demos.yjs.dev', 'monaco-demo', ydoc)
+  const provider = new WebrtcProvider('webrtc-test', ydoc, { signaling: ['ws://localhost:4444'] })
   const ytext = ydoc.getText('monaco')
 
   const editor = monaco.editor.create(/** @type {HTMLElement} */ (document.getElementById('monaco-editor')), {
