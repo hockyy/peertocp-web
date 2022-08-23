@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "file-loader": "^6.2.0"
-  }
+  },
   "keywords": [],
   "contributors": [
     "Kevin Jahns <kevin.jahns@pm.me>",
