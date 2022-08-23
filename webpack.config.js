@@ -16,7 +16,7 @@ module.exports = {
     globalObject: 'self',
     path: path.resolve(__dirname, './dist/'),
     filename: '[name].bundle.js',
-    publicPath: '/monaco/dist/'
+    publicPath: '/dist/'
   },
   module: {
     rules: [{
