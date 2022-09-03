@@ -4,7 +4,7 @@ This is supposed to be a front-end for my final project... But as life goes on I
 
 This was built using:
 
-- yjs (y-monaco, y-webrtc, y-websocket)
+- yjs (y-codemirror.next, y-webrtc, y-websocket)
 - Webpack
 
 This code is patched here and there from several sources, but was mainly based on [Monaco Demo from yjs](https://github.com/yjs/yjs-demos/tree/main/monaco).
