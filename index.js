@@ -11,6 +11,7 @@ import {javascript} from "@codemirror/lang-javascript";
 import {keymap} from "@codemirror/view";
 import {EditorState} from "@codemirror/state";
 import {cpp} from "@codemirror/lang-cpp";
+import {indentWithTab} from "@codemirror/commands";
 
 const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
@@ -57,7 +58,8 @@ const enterRoom = (roomName) => {
         doc: ytext.toString(),
         extensions: [
             keymap.of([
-                ...yUndoManagerKeymap
+                ...yUndoManagerKeymap,
+                indentWithTab
             ]),
             basicSetup,
             cpp(),
