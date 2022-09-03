@@ -1,9 +1,9 @@
 /* eslint-env browser */
 
 import * as Y from 'yjs'
-import {MonacoBinding} from 'y-monaco'
 import * as monaco from 'monaco-editor'
 import {WebrtcProvider} from "y-webrtc";
+import {MonacoBinding} from "./src/y-monaco";
 
 const DIST_PATH = '/dist'
 const connectionStatus = document.getElementById("connection-status")

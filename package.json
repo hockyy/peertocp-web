@@ -20,10 +20,11 @@
   "license": "ISC",
   "dependencies": {
     "css-loader": "^6.7.1",
+    "lib0": "^0.2.52",
     "monaco-editor": "^0.34.0",
     "style-loader": "^3.3.1",
     "webpack-dev-server": "^4.10.0",
-    "y-monaco": "^0.1.4",
+    "y-protocols": "^1.0.5",
     "y-webrtc": "^10.2.3",
     "y-websocket": "^1.4.4",
     "yjs": "^13.5.41"
