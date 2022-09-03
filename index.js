@@ -16,7 +16,7 @@ const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
 const DEFAULT_USERNAME = 'Anonymous ' + Math.floor(Math.random() * 100)
 const connectionStatus = document.getElementById("connection-status")
-const connectionButton = document.getElementById("y-connect-btn")
+const connectionButton = document.getElementById("connect-button")
 const roomNameInput = document.getElementById("room-name-input")
 const usernameInput = document.getElementById("username-input")
 let codeMirrorView;
@@ -89,6 +89,7 @@ connectionButton.addEventListener('click', () => {
         provider.disconnect()
         // provider.destroy()
         connectionButton.textContent = 'Connect'
+        connectionButton.classList.replace("btn-danger", "btn-success")
     } else {
         const enterState = getEnterState()
         console.log(enterState)
@@ -100,5 +101,6 @@ connectionButton.addEventListener('click', () => {
             provider.connect()
         }
         connectionButton.textContent = 'Disconnect'
+        connectionButton.classList.replace("btn-success", "btn-danger")
     }
 })
