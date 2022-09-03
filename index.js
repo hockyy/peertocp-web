@@ -7,7 +7,6 @@ import {yCollab, yUndoManagerKeymap} from 'y-codemirror.next'
 
 import * as random from "lib0/random";
 import {basicSetup, EditorView} from "codemirror";
-import {javascript} from "@codemirror/lang-javascript";
 import {keymap} from "@codemirror/view";
 import {EditorState} from "@codemirror/state";
 import {cpp} from "@codemirror/lang-cpp";
@@ -15,12 +14,14 @@ import {indentWithTab} from "@codemirror/commands";
 
 const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
+const DEFAULT_USERNAME = 'Anonymous ' + Math.floor(Math.random() * 100)
 const connectionStatus = document.getElementById("connection-status")
 const connectionButton = document.getElementById("y-connect-btn")
 const roomNameInput = document.getElementById("room-name-input")
+const usernameInput = document.getElementById("username-input")
 let codeMirrorView;
 let provider;
-let currentRoom;
+let currentState = {}
 
 export const usercolors = [
     {color: '#30bced', light: '#30bced33'},
@@ -35,8 +36,20 @@ export const usercolors = [
 
 export const userColor = usercolors[random.uint32() % usercolors.length]
 
-const enterRoom = (roomName) => {
-    currentRoom = roomName
+const getEnterState = () => {
+    return {
+        roomName: roomNameInput.value || DEFAULT_ROOM,
+        username: usernameInput.value || DEFAULT_USERNAME,
+    };
+}
+
+window.addEventListener('load', () => {
+    enterRoom(getEnterState())
+})
+
+
+const enterRoom = ({roomName, username}) => {
+    currentState = {roomName:roomName, username:username}
     connectionStatus.textContent = roomName
     console.log("Entering room " + roomName)
     const ydoc = new Y.Doc()
@@ -49,7 +62,7 @@ const enterRoom = (roomName) => {
         }
     )
     provider.awareness.setLocalStateField('user', {
-        name: 'Anonymous ' + Math.floor(Math.random() * 100),
+        name: username,
         color: userColor.color,
         colorLight: userColor.light
     })
@@ -70,9 +83,6 @@ const enterRoom = (roomName) => {
     codeMirrorView = new EditorView({state, parent: /** @type {HTMLElement} */ (document.querySelector('#editor'))})
 }
 
-window.addEventListener('load', () => {
-    enterRoom(DEFAULT_ROOM)
-})
 
 connectionButton.addEventListener('click', () => {
     if (provider.shouldConnect) {
@@ -80,12 +90,12 @@ connectionButton.addEventListener('click', () => {
         // provider.destroy()
         connectionButton.textContent = 'Connect'
     } else {
-        const roomName = roomNameInput.value || DEFAULT_ROOM
-        console.log(roomName)
-        if (roomName !== currentRoom) {
+        const enterState = getEnterState()
+        console.log(enterState)
+        if (enterState !== currentState) {
             provider.destroy()
             codeMirrorView.destroy()
-            enterRoom(roomName ? roomName : DEFAULT_ROOM)
+            enterRoom(enterState)
         } else {
             provider.connect()
         }

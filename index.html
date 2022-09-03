@@ -4,15 +4,35 @@
     <meta charset="utf-8"/>
     <title>Yjs CodeMirror Example</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
-<button type="button" id="y-connect-btn">Disconnect</button>
-<label>
-    Room Name
-    <input id="room-name-input"/>
-</label>
-<p>Connection status</p>
-<p id="connection-status"></p>
+<div style="display: flex; flex-direction: column; align-items: start">
+    <div class="input-box">
+        <label for="room-name-input">
+            Room Name
+        </label>
+        <input id="room-name-input"/>
+    </div>
+    <div class="input-box">
+        <label for="username-input">
+            Username
+        </label>
+        <input id="username-input"/>
+    </div>
+</div>
+<button type="button" class="btn btn-primary m-2" id="y-connect-btn">Disconnect</button>
+<p>Connection status: </p>
+<div>
+    <div id="room">
+        <span> 🏠️ Room:</span> <b id="connection-status"></b>
+    </div>
+    <div id="online-peers">
+    🧑‍🤝‍🧑 Online clients:
+    </div>
+</div>
 <div id="editor"></div>
 <script type="text/javascript" src="./dist/codemirror.bundle.js" async></script>
 </body>
