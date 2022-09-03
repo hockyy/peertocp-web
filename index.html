@@ -24,13 +24,16 @@
     </div>
 </div>
 <button type="button" class="btn btn-danger m-2" id="connect-button">Disconnect</button>
-<p>Connection status: </p>
 <div>
+    <div id="connection">
+        🔗 Connection: <b id="connection-status" style="color: #32a852">Online</b>
+    </div>
     <div id="room">
-        <span> 🏠️ Room:</span> <b id="connection-status"></b>
+        🏠️ Room: <b id="room-status"></b>
     </div>
     <div id="online-peers">
-    🧑‍🤝‍🧑 Online clients:
+        🧑‍🤝‍🧑 Online clients:
+        <div class="ml-3" id="peers-status" style="font-weight: bolder"></div>
     </div>
 </div>
 <div id="editor"></div>

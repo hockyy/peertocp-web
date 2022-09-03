@@ -12,11 +12,13 @@ import {EditorState} from "@codemirror/state";
 import {cpp} from "@codemirror/lang-cpp";
 import {indentWithTab} from "@codemirror/commands";
 
-const SIGNALLING_SERVER_URL ='ws://192.168.0.102:4444';
+const SIGNALLING_SERVER_URL = 'ws://192.168.0.102:4444';
 const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
 const DEFAULT_USERNAME = 'Anonymous ' + Math.floor(Math.random() * 100)
+const roomStatus = document.getElementById("room-status")
 const connectionStatus = document.getElementById("connection-status")
+const peersStatus = document.getElementById("peers-status")
 const connectionButton = document.getElementById("connect-button")
 const roomNameInput = document.getElementById("room-name-input")
 const usernameInput = document.getElementById("username-input")
@@ -32,8 +34,9 @@ export const usercolors = [
     {color: '#ee6352', light: '#ee635233'},
     {color: '#9ac2c9', light: '#9ac2c933'},
     {color: '#8acb88', light: '#8acb8833'},
-    {color: '#1be7ff', light: '#1be7ff33'}
 ]
+
+const STATUS_COLORS = ["#a83232", "#32a852"]
 
 export const userColor = usercolors[random.uint32() % usercolors.length]
 
@@ -48,10 +51,20 @@ window.addEventListener('load', () => {
     enterRoom(getEnterState())
 })
 
+const getPeersString = (peers) => {
+    const ret = document.createElement("ul")
+    peers.forEach((val, key) => {
+        const cur = document.createElement("li");
+        cur.innerHTML = (`${key} - ${val.user.name}\n`)
+        cur.style.color = `${val.user.color}`
+        ret.appendChild(cur)
+    })
+    return ret;
+}
 
 const enterRoom = ({roomName, username}) => {
-    currentState = {roomName:roomName, username:username}
-    connectionStatus.textContent = roomName
+    currentState = {roomName: roomName, username: username}
+    roomStatus.textContent = roomName
     console.log("Entering room " + roomName)
     const ydoc = new Y.Doc()
     provider = new WebrtcProvider(
@@ -68,6 +81,9 @@ const enterRoom = ({roomName, username}) => {
         colorLight: userColor.light
     })
     const ytext = ydoc.getText('codemirror')
+    provider.awareness.on("change", (status) => {
+        peersStatus.innerHTML = (getPeersString(provider.awareness.getStates())).innerHTML
+    })
     const state = EditorState.create({
         doc: ytext.toString(),
         extensions: [
@@ -91,6 +107,9 @@ connectionButton.addEventListener('click', () => {
         // provider.destroy()
         connectionButton.textContent = 'Connect'
         connectionButton.classList.replace("btn-danger", "btn-success")
+        connectionStatus.textContent = "Offline"
+        connectionStatus.style.color = STATUS_COLORS[0]
+        peersStatus.innerHTML = ""
     } else {
         const enterState = getEnterState()
         console.log(enterState)
@@ -101,6 +120,8 @@ connectionButton.addEventListener('click', () => {
         } else {
             provider.connect()
         }
+        connectionStatus.textContent = "Online"
+        connectionStatus.style.color = STATUS_COLORS[1]
         connectionButton.textContent = 'Disconnect'
         connectionButton.classList.replace("btn-success", "btn-danger")
     }
