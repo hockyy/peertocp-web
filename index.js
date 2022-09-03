@@ -84,6 +84,7 @@ connectionButton.addEventListener('click', () => {
         console.log(roomName)
         if (roomName !== currentRoom) {
             provider.destroy()
+            codeMirrorView.destroy()
             enterRoom(roomName ? roomName : DEFAULT_ROOM)
         } else {
             provider.connect()
