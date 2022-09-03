@@ -2,7 +2,7 @@
 
 import * as Y from 'yjs'
 import {WebrtcProvider} from "y-webrtc";
-
+import * as child from 'child_process';
 import {yCollab, yUndoManagerKeymap} from 'y-codemirror.next'
 
 import * as random from "lib0/random";
@@ -22,15 +22,17 @@ const peersStatus = document.getElementById("peers-status")
 const connectionButton = document.getElementById("connect-button")
 const roomNameInput = document.getElementById("room-name-input")
 const usernameInput = document.getElementById("username-input")
+const spawnButton = document.getElementById("spawn-button")
+
 let codeMirrorView;
 let provider;
 let currentState = {}
 
 const randomColor = () => {
-  const randomColor = Math.floor(Math.random()*16777215).toString(16);
-  const color = "#" + randomColor;
-  const light = color + "33";
-  return {color, light}
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    const color = "#" + randomColor;
+    const light = color + "33";
+    return {color, light}
 }
 
 const STATUS_COLORS = ["#a83232", "#32a852"]
@@ -122,4 +124,19 @@ connectionButton.addEventListener('click', () => {
         connectionButton.textContent = 'Disconnect'
         connectionButton.classList.replace("btn-success", "btn-danger")
     }
+})
+
+spawnButton.addEventListener("click", () => {
+    const python = child.exec('python3', ['script1.py'])
+    let dataToSend;
+    python.stdout.on('data', function (data) {
+        console.log('Pipe data from python script ...');
+        dataToSend = data.toString();
+    });
+    // in close event we are sure that stream from child process is closed
+    python.on('close', (code) => {
+        console.log(`child process close all stdio with code ${code}`);
+        // send data to browser
+        res.send(dataToSend)
+    });
 })
