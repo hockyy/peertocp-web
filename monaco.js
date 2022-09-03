@@ -6,11 +6,13 @@ import {WebrtcProvider} from "y-webrtc";
 import {MonacoBinding} from "./src/y-monaco";
 
 const DIST_PATH = '/dist'
+const DEFAULT_ROOM = 'welcome-room'
 const connectionStatus = document.getElementById("connection-status")
 const connectionButton = document.getElementById("y-connect-btn")
 const roomNameInput = document.getElementById("room-name-input")
 let monacoBinding;
 let provider;
+let currentRoom;
 let editor = monaco.editor.create(document.getElementById('monaco-editor'), {
     language: 'cpp',
     theme: 'vs-dark'
@@ -36,6 +38,8 @@ window.MonacoEnvironment = {
 }
 
 const enterRoom = (roomName) => {
+    currentRoom = roomName
+    connectionStatus.textContent = roomName
     console.log("Entering room " + roomName)
     const ydoc = new Y.Doc()
     provider = new WebrtcProvider(roomName, ydoc, {signaling: ['ws://192.168.0.102:4444']})
@@ -44,18 +48,23 @@ const enterRoom = (roomName) => {
 }
 
 window.addEventListener('load', () => {
-    enterRoom('welcome-room')
+    enterRoom(DEFAULT_ROOM)
 })
 
 connectionButton.addEventListener('click', () => {
     if (provider.shouldConnect) {
         provider.disconnect()
-        provider.destroy()
+        // provider.destroy()
         connectionButton.textContent = 'Connect'
     } else {
-        const roomName = roomNameInput.value
-        enterRoom(roomName ? roomName : 'welcome-room')
-        provider.connect()
+        const roomName = roomNameInput.value || DEFAULT_ROOM
+        console.log(roomName)
+        if (roomName !== currentRoom) {
+            provider.destroy()
+            enterRoom(roomName ? roomName : DEFAULT_ROOM)
+        } else {
+            provider.connect()
+        }
         connectionButton.textContent = 'Disconnect'
     }
 })
