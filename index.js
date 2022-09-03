@@ -12,6 +12,7 @@ import {EditorState} from "@codemirror/state";
 import {cpp} from "@codemirror/lang-cpp";
 import {indentWithTab} from "@codemirror/commands";
 
+const SIGNALLING_SERVER_URL ='ws://192.168.0.102:4444';
 const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
 const DEFAULT_USERNAME = 'Anonymous ' + Math.floor(Math.random() * 100)
@@ -58,7 +59,7 @@ const enterRoom = ({roomName, username}) => {
         ydoc,
         {
             // awareness: new Awareness(),
-            signaling: ['ws://192.168.0.102:4444']
+            signaling: [SIGNALLING_SERVER_URL]
         }
     )
     provider.awareness.setLocalStateField('user', {
