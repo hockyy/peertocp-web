@@ -6,6 +6,15 @@ import * as monaco from 'monaco-editor'
 import {WebrtcProvider} from "y-webrtc";
 
 const DIST_PATH = '/dist'
+const connectionStatus = document.getElementById("connection-status")
+const connectionButton = document.getElementById("y-connect-btn")
+const roomNameInput = document.getElementById("room-name-input")
+let monacoBinding;
+let provider;
+let editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+    language: 'cpp',
+    theme: 'vs-dark'
+});
 
 // @ts-ignore
 window.MonacoEnvironment = {
@@ -26,28 +35,27 @@ window.MonacoEnvironment = {
     }
 }
 
-window.addEventListener('load', () => {
+const enterRoom = (roomName) => {
+    console.log("Entering room " + roomName)
     const ydoc = new Y.Doc()
-    const provider = new WebrtcProvider('webrtc-test', ydoc, {signaling: ['ws://localhost:4444']})
+    provider = new WebrtcProvider(roomName, ydoc, {signaling: ['ws://192.168.0.102:4444']})
     const ytext = ydoc.getText('monaco')
+    monacoBinding = new MonacoBinding(ytext, editor.getModel(), new Set([editor]), provider.awareness)
+}
 
-    var editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-        language: 'cpp',
-        theme: 'vs-dark'
-    });
-    const monacoBinding = new MonacoBinding(ytext, editor.getModel(), new Set([editor]), provider.awareness)
+window.addEventListener('load', () => {
+    enterRoom('welcome-room')
+})
 
-    const connectBtn = /** @type {HTMLElement} */ (document.getElementById('y-connect-btn'))
-    connectBtn.addEventListener('click', () => {
-        if (provider.shouldConnect) {
-            provider.disconnect()
-            connectBtn.textContent = 'Connect'
-        } else {
-            provider.connect()
-            connectBtn.textContent = 'Disconnect'
-        }
-    })
-
-    // @ts-ignore
-    window.example = {provider, ydoc, ytext, monacoBinding}
+connectionButton.addEventListener('click', () => {
+    if (provider.shouldConnect) {
+        provider.disconnect()
+        provider.destroy()
+        connectionButton.textContent = 'Connect'
+    } else {
+        const roomName = roomNameInput.value
+        enterRoom(roomName ? roomName : 'welcome-room')
+        provider.connect()
+        connectionButton.textContent = 'Disconnect'
+    }
 })

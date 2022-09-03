@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
     <meta charset="utf-8"/>
     <title>Yjs Monaco Example</title>
@@ -35,12 +35,13 @@
 </head>
 <body>
 <button type="button" id="y-connect-btn">Disconnect</button>
-<p></p>
-<p>This is a demo of the <a href="https://github.com/yjs/yjs">Yjs</a> ⇔ <a
-        href="https://microsoft.github.io/monaco-editor/">Monaco</a> binding: <a href="https://github.com/yjs/y-monaco">y-monaco</a>.
-</p>
-<p>The content of this editor is shared with every client that visits this domain.</p>
-<div id="monaco-editor"/>
+<label>
+    Room Name
+    <input id="room-name-input"/>
+</label>
+<p>Connection status</p>
+<p id="connection-status"></p>
+<div id="monaco-editor"></div>
 <script src="./dist/monaco.bundle.js"></script>
 </body>
 </html>
