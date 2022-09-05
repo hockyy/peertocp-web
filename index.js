@@ -2,10 +2,8 @@
 
 import * as Y from 'yjs'
 import {WebrtcProvider} from "y-webrtc";
-import * as child from 'child_process';
 import {yCollab, yUndoManagerKeymap} from 'y-codemirror.next'
 
-import * as random from "lib0/random";
 import {basicSetup, EditorView} from "codemirror";
 import {keymap} from "@codemirror/view";
 import {EditorState} from "@codemirror/state";
