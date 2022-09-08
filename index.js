@@ -9,6 +9,7 @@ import {keymap} from "@codemirror/view";
 import {EditorState} from "@codemirror/state";
 import {cpp} from "@codemirror/lang-cpp";
 import {indentWithTab} from "@codemirror/commands";
+import {WebsocketProvider} from "y-websocket";
 
 const SIGNALLING_SERVER_URL = 'ws://103.167.137.77:4444';
 const WEBSOCKET_SERVER_URL = 'ws://103.167.137.77:4443';
