@@ -11,6 +11,8 @@ import {cpp} from "@codemirror/lang-cpp";
 import {indentWithTab} from "@codemirror/commands";
 
 const SIGNALLING_SERVER_URL = 'ws://103.167.137.77:4444';
+const WEBSOCKET_SERVER_URL = 'ws://103.167.137.77:4443';
+
 const DIST_PATH = '/dist'
 const DEFAULT_ROOM = 'welcome-room'
 const DEFAULT_USERNAME = 'Anonymous ' + Math.floor(Math.random() * 100)
