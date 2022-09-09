@@ -71,7 +71,8 @@ const enterRoom = ({roomName, username}) => {
       ydoc,
       {
         // awareness: new Awareness(),
-        signaling: [SIGNALLING_SERVER_URL]
+        signaling: [SIGNALLING_SERVER_URL],
+        filterBcConns: false
       }
   )
   provider.awareness.setLocalStateField('user', {
@@ -83,6 +84,7 @@ const enterRoom = ({roomName, username}) => {
   provider.awareness.on("change", (status) => {
     peersStatus.innerHTML = (getPeersString(
         provider.awareness.getStates())).innerHTML
+    console.log(provider.room)
   })
   const state = EditorState.create({
     doc: ytext.toString(),
